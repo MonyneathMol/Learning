@@ -4,7 +4,8 @@
   "description": "A GraphQL MongoDB server.",
   "main": "index.js",
   "scripts": {
-    "start": "npm run server",
+    "start": "babel-node server",
+    "dev": "npm run server",
     "server": "nodemon --exec babel-node server/index.js"
   },
   "keywords": [

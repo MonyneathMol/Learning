@@ -5,6 +5,8 @@ import mongoose from "mongoose";
 import schema from "../graphql/";
 import { models } from "./config/db/";
 
+import {ApolloServer} from 'apollo-server';
+
 const { mongoURI: db } = process.env;
 
 const pubsub = new PubSub();
@@ -32,12 +34,35 @@ mongoose
   )
   .then(() => console.log("MongoDB connected"))
   .catch(err => console.log(err));
+//
+// const server = new GraphQLServer({
+//   schema,
+//   context
+// });
 
-const server = new GraphQLServer({
-  schema,
-  context
-});
+    const server = new ApolloServer(
+        {
+            schema,
+            context :async ({ req, connection }) => {
+                if (connection) {
+                    // check connection for metadata
+                    return connection.context;
+                } else {
+                    // check from req
+                    const token = req.headers.authorization || "";
 
-server.start(options, ({ port }) => {
-  console.log(`🚀 Server is running on http://localhost:${port}`);
+                    return { token };
+                }
+            },
+        },
+
+
+    );
+
+// server.start(options, ({ port }) => {
+//   console.log(`🚀 Server is running on http://localhost:${port}`);
+// });
+
+server.listen().then(({ url }) => {
+    console.log(`🚀  Server ready at ${url}`);
 });

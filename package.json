@@ -46,9 +46,10 @@
     "react-testing-library": "^5.2.3"
   },
   "dependencies": {
+    "apollo-server": "^2.16.0",
     "concurrently": "^4.1.0",
     "dotenv": "^6.1.0",
-    "graphql": "^14.0.2",
+    "graphql": "^15.3.0",
     "graphql-subscriptions": "^1.0.0",
     "graphql-tools": "^4.0.3",
     "graphql-yoga": "^1.16.7",

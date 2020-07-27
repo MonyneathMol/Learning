@@ -10,6 +10,7 @@ export default `
 
   type Query {
     user(_id: ID!): User!
+    userByName(username : String!):[User!]
     users: [User!]!
   }
 

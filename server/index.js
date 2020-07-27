@@ -63,6 +63,10 @@ mongoose
 //   console.log(`🚀 Server is running on http://localhost:${port}`);
 // });
 
-server.listen().then(({ url }) => {
+// server.listen(options).then(({ url }) => {
+//     console.log(`🚀  Server ready at ${url}`);
+// });
+
+server.listen(options).then(({ url }) => {
     console.log(`🚀  Server ready at ${url}`);
 });

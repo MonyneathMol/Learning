@@ -56,7 +56,7 @@ export default {
   Subscription: {
     comment: {
       subscribe: (parent, args, { pubsub }) => {
-        //return pubsub.asyncIterator(channel)
+        return pubsub.asyncIterator(channel)
       }
     }
   },

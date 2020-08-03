@@ -1,4 +1,5 @@
-export default `
+const { gql } = require("apollo-server");
+export default gql`
   type User {
     _id: String!
     name: String!

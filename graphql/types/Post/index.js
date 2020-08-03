@@ -1,4 +1,5 @@
-export default `
+const { gql } = require("apollo-server");
+export default gql`
   type Dates {
     published: String
     updated: String
@@ -26,13 +27,13 @@ export default `
   }
 
   type Subscription {
-    post: PostSubscriptionPayload!
+    posts: [Post]!
   }
 
-  type PostSubscriptionPayload {
-    mutation: MutationType!
-    post: Post!
-  }
+#  type PostSubscriptionPayload {
+#    mutation: MutationType!
+#    post: Post!
+#  }
   
   input DatesInput {
     published: String

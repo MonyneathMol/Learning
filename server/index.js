@@ -43,17 +43,33 @@ mongoose
     const server = new ApolloServer(
         {
             schema,
-            context :async ({ req, connection }) => {
-                if (connection) {
-                    // check connection for metadata
-                    return connection.context;
-                } else {
-                    // check from req
-                    const token = req.headers.authorization || "";
-
-                    return { token };
-                }
-            },
+            context
+            // context :async ({ req, connection }) => {
+            //     if (connection) {
+            //         // check connection for metadata
+            //         return connection.context;
+            //     } else {
+            //         // check from req
+            //         const token = req.headers.authorization || "";
+            //
+            //         return { token };
+            //     }
+            // },
+            // subscriptions: {
+            //     onConnect: (connectionParams, webSocket) => {
+            //         if (connectionParams.authToken) {
+            //             return validateToken(connectionParams.authToken)
+            //                 .then(findUser(connectionParams.authToken))
+            //                 .then(user => {
+            //                     return {
+            //                         currentUser: user,
+            //                     };
+            //                 });
+            //         }
+            //
+            //         throw new Error('Missing auth token!');
+            //     },
+            // }
         },
 
 
@@ -67,6 +83,7 @@ mongoose
 //     console.log(`🚀  Server ready at ${url}`);
 // });
 
-server.listen(options).then(({ url }) => {
+server.listen(options).then(({ url,subscriptionsUrl }) => {
     console.log(`🚀  Server ready at ${url}`);
+    console.log(`🚀  subscriptionURL ready at ${subscriptionsUrl}`);
 });

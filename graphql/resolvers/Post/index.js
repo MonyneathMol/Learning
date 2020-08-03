@@ -4,6 +4,11 @@ import Comment from "../../../server/models/Comment";
 
 import { transformPost } from "../merge";
 
+const  { PubSub,withFilter} = require('apollo-server');
+
+const NEW_POST = 'NEW_POST';
+const pubsub = new PubSub();
+
 export default {
   Query: {
     post: async (parent, { _id }, context, info) => {
@@ -38,18 +43,34 @@ export default {
       try {
         // const result = await newPost.save();
         const result = await new Promise((resolve, reject) => {
+
          newPost.save((err, res) => {
+           console.log(`POST Value ${newPost}`);
+           // pubsub.publish(NEW_POST, {
+           //   "posts" : [newPost]
+           // });
             err ? reject(err) : resolve(res);
           });
         });
+
         createdPost = transformPost(result);
-        const creator = await User.findById(post.author);
+         const creator = await User.findById(post.author);
 
         if (!creator) {
           throw new Error("User not found.");
         }
         creator.posts.push(newPost);
         await creator.save();
+
+
+        const allPost = await Post.find({})
+            .populate()
+            .exec();
+        await pubsub.publish(NEW_POST, {
+          "posts": allPost
+        })
+
+
         return createdPost;
       } catch (error) {
         console.log(error);
@@ -89,11 +110,12 @@ export default {
       }
     }
   },
+
+
+
   Subscription: {
-    post: {
-      subscribe: (parent, args, { pubsub }) => {
-        return pubsub.asyncIterator(channel)
-      }
+    posts: {
+      subscribe: () => pubsub.asyncIterator([NEW_POST]),
     }
   },
   Post: {
